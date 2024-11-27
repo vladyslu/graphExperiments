@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV</title>
+    
+	
+	<style>
+	/* Default Style */
+.circle-button, .triangle-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+	    z-index: 54;
+    position: relative;
+}
+
+/* Style 1: Modern Look (Fixed Green Issue) */
+.modern-button {
+    background-color: #28a745 !important;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid #28a745;
+	    z-index: 54;
+    position: relative;
+}
+
+.triangle-button.modern-button {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><polygon points="75,0 150,150 0,150" style="fill:#28a745;stroke:black;stroke-width:1" /></svg>');
+    z-index: 54;
+    position: relative;
+}
+
+/* Style 2: Gradient */
+.gradient-button {
+    background: linear-gradient(45deg, #ff6b6b, #f06595);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.triangle-button.gradient-button {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><polygon points="75,0 150,150 0,150" style="fill:#f06595;stroke:black;stroke-width:1" /></svg>');
+}
+
+/* Style 3: Glass Effect */
+.glass-button {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: black;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    padding: 10px 20px;
+    border-radius: 50%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.triangle-button.glass-button {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><polygon points="75,0 150,150 0,150" style="fill:rgba(255,255,255,0.2);stroke:black;stroke-width:1" /></svg>');
+}
+
+/* Style 4: Neon Style */
+.neon-button {
+    background-color: #0f0;
+    color: #fff;
+    text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px #0f0, 0 0 40px #0f0;
+}
+
+.triangle-button.neon-button {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><polygon points="75,0 150,150 0,150" style="fill:#0f0;stroke:black;stroke-width:1" /></svg>');
+}
+
+/* Style 5: 3D Style */
+.three-d-button {
+    background-color: #ff9800;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    box-shadow: 0 5px #b36b00;
+}
+
+.three-d-button:active {
+    box-shadow: 0 2px #b36b00;
+    transform: translateY(3px);
+}
+
+.triangle-button.three-d-button {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><polygon points="75,0 150,150 0,150" style="fill:#ff9800;stroke:black;stroke-width:1" /></svg>');
+}
+
+/* Style 6: Outline */
+.outline-button {
+    background-color: transparent;
+    color: #007bff;
+    border: 2px solid #007bff;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+
+
+	</style>
+	
+	
+	
+	<style>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		.arrow-line {
+    position: absolute;
+    width: 50px; /* Length of the line between buttons */
+    height: 2px;  /* Thickness of the line */
+    background-color: black; /* Color of the line */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.arrow-right .arrow-line {
+    left: 100%;
+}
+
+.arrow-left .arrow-line {
+    right: 100%;
+}
+
+
+	
+         #button-container {
+                    display: flex;
+    position: relative;
+    margin-top: 150px;
+    align-items: stretch;
+    justify-content: space-around;
+    
+	
+        }
+		.sectionWrapper1 {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    align-items: flex-end; /* Center buttons vertically */
+    gap: 10px; /* Add some space between buttons */
+    margin-top: 50px;
+}
+        .button-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+			
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+			
+        }
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            white-space: nowrap;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        button:hover .tooltip {
+            display: block;
+        }
+        img {
+            height: 24px;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+		
+        button:hover .tooltip {
+            display: block;
+        }
+        .arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            z-index: 0;
+        }
+   .line {
+    position: absolute;
+    height: 2px;
+    background-color: black;
+}
+
+.arrow-right {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 12px solid black;
+}
+
+
+
+        .arrow-left {
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent #007bff;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+		
+		
+		/* Circle buttons with dynamic size and consistent aspect ratio */
+.circle-button {
+    display: inline-block;
+    padding: 10px;
+    background-color: blue; /* Button color */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Makes the button circular */
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px; /* Adjustable font size */
+    aspect-ratio: 1 / 1; /* Ensures 1:1 aspect ratio */
+    width: auto; /* Dynamic width based on content */
+    height: auto; /* Dynamic height based on content */
+    min-width: 50px; /* Set a minimum width */
+    min-height: 50px; /* Set a minimum height */
+    max-width: 100px; /* Set a maximum width to ensure consistent size */
+    max-height: 100px; /* Set a maximum height to ensure consistent size */
+    box-sizing: border-box; /* Ensure padding doesn't affect width/height */
+}
+
+		
+		  .triangle-button {
+            width: 40px; /* Set button width */
+            height: 40px; /* Set button height */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><polygon points="75,0 150,150 0,150" style="stroke:black;stroke-width:1" /></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            color: white;
+			background-color:white !important;
+        }
+		
+		/* New class for the label on top of the buttons */
+.button-label {
+    position: relative;
+    display: block;
+    text-align: center;
+    font-size: 14px; /* Adjust font size */
+    margin-bottom: 5px; /* Space between label and button */
+    color: black; /* Label color */
+}
+
+
+
+.sectionWrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+}
+
+    </style>
+</head>
+<body>
+    <h1>CSV chart</h1>
+    <input type="file" id="fileInput" accept=".csv">
+	
+	
+
+<button id="refreshButton">Refresh chart</button>
+
+
+<h2>Select Button Style</h2>
+<select id="styleSwitcher">
+    <option value="default">Default</option>
+    <option value="glass">Glass Effect</option>
+    <option value="neon">Neon</option>
+    <option value="3d">3D</option>
+</select>
+
+<h2>Select Button Color</h2>
+<input type="color" id="colorPicker" value="#007bff">
+
+<h2 style="display:none;">Select Button Shape</h2>
+<select style="display:none;" id="shapeSwitcher">
+    <option value="circle">Circle</option>
+    <option value="triangle">Triangle</option>
+</select>
+
+
+	
+	
+    <div id="button-container"></div>
+<script src="./line.js"></script>
+    <script>
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+		
+var colorArray = ["Blue", "Green", "Red", "Orange", "Violet", "Indigo", "Yellow"];
+let colorCounterMain={};
+let selectedKeys=[];
+ // Draw a line with an arrowhead between two points
+// Track the number of times the function has been called with the same elements
+let callCount = {};
+let positionIndex = 0;
+
+// Define possible start and end positions (borders of the elements)
+    const possiblePositions = [
+        { startX: '110%', startY: '50%', endX: '0%', endY: '50%' }, 
+		{ startX: '110%', startY: '60%', endX: '0%', endY: '60%' },
+				// Top-right to top-left
+          // Right-middle to left-middle
+          // Center-right to center-left
+        { startX: '110%', startY: '40%', endX: '0%', endY: '40%' },
+		{ startX: '110%', startY: '70%', endX: '0%', endY: '70%' },
+				// Lower-right to lower-left
+        { startX: '110%', startY: '30%', endX: '0%', endY: '30%' },
+		 { startX: '110%', startY: '80%', endX: '0%', endY: '80%' },
+		// Bottom-right to bottom-left
+        { startX: '110%', startY: '20%', endX: '0%', endY: '20%' },
+		{ startX: '110%', startY: '90%', endX: '0%', endY: '90%' },		// Slightly inside right border to left
+        { startX: '110%', startY: '10%', endX: '0%', endY: '10%' },   // Right inside to left inside
+          // Center inside positions
+           // Lower-right inside to lower-left inside
+        { startX: '110%', startY: '100%', endX: '0%', endY: '100%' }    // Bottom-right inside to bottom-left inside
+    ];
+
+
+let leaderLines = [];
+
+function drawLineWithArrow(element1, element2, colorArrow) {
+let positionIndex = 0;
+    // Check if this pair of elements has been used before, and increment the call count
+	let element1id = element1.id;
+			let element2id = element2.id;
+    if(callCount[element1.id] == null){
+			
+		   callCount[element1id] = {};
+		  callCount[element1id][element2id] = {"colorArrow":colorArrow, "index": 0}
+		 positionIndex = 0;
+	
+	}else if(callCount[element1id][element2id] == null){
+			callCount[element1id][element2id] = {"colorArrow":colorArrow, "index": 0};
+			positionIndex = 0;
+	}else{
+		if(callCount[element1id][element2id]["colorArrow"] !== colorArrow){
+			callCount[element1id][element2id]["index"]++; 
+			if(callCount[element1id][element2id]["index"] >= (possiblePositions.length - 1)){
+			positionIndex = 0;
+			callCount[element1id][element2id]["index"] = 0;
+			}else{
+	//		console.log(callCount[element1id][element2id])
+			positionIndex = callCount[element1id][element2id]["index"]; 
+			}
+		}
+	
+	}
+	
+   
+
+    
+
+    // Use different positions based on the current call count (cycle through positions)
+    
+    const position = possiblePositions[positionIndex];
+	//console.log(positionIndex)
+	//console.log(possiblePositions.length)
+	//console.log(position)
+
+    // Draw the line using the selected position
+    let newLine = new LeaderLine(
+        LeaderLine.pointAnchor(element1, {x: position.startX, y: position.startY}),
+        LeaderLine.pointAnchor(element2, {x: position.endX, y: position.endY}),
+        {
+            color: colorArrow,
+			dash: {animation: true},
+            size: 2,          // Line thickness
+            endPlug: 'arrow1' // Arrowhead style
+        }
+    );
+	
+	
+	leaderLines.push(newLine);
+
+    // Increment the call count for this pair of elements
+   
+}
+
+
+function deleteAllLeaderLines() {
+    // Loop through each LeaderLine object and remove it
+    leaderLines.forEach(line => {
+        line.remove(); // Remove the line
+    });
+    
+    // Clear the array after removing all lines
+    leaderLines = [];
+	
+}
+
+
+
+console.log(callCount)
+
+
+
+
+// Get the elements
+const styleSwitcher = document.getElementById('styleSwitcher');
+const colorPicker = document.getElementById('colorPicker');
+const shapeSwitcher = document.getElementById('shapeSwitcher');
+
+// Function to apply selected style
+function applyButtonStyle(style, color, shape) {
+    const buttons = document.querySelectorAll('.circle-button, .triangle-button');
+    buttons.forEach(button => {
+        // Reset button classes
+        button.className = shape === 'circle' ? 'circle-button' : 'triangle-button';
+        button.classList.remove('modern-button', 'gradient-button', 'glass-button', 'neon-button', 'three-d-button', 'outline-button');
+        
+        // Apply style class
+        if (style === 'modern') {
+            button.classList.add('modern-button');
+        } else if (style === 'gradient') {
+            button.classList.add('gradient-button');
+        } else if (style === 'glass') {
+            button.classList.add('glass-button');
+        } else if (style === 'neon') {
+            button.classList.add('neon-button');
+        } else if (style === '3d') {
+            button.classList.add('three-d-button');
+        } else if (style === 'outline') {
+            button.classList.add('outline-button');
+        }
+
+        // Apply custom color
+        button.style.backgroundColor = (style !== 'gradient' && style !== 'glass') ? color : '';  // Custom colors for non-gradient/glass
+    });
+}
+
+// Event listeners for switches and color picker
+styleSwitcher.addEventListener('change', () => {
+    const selectedStyle = styleSwitcher.value;
+    const selectedColor = colorPicker.value;
+    const selectedShape = shapeSwitcher.value;
+    applyButtonStyle(selectedStyle, selectedColor, selectedShape);
+});
+
+colorPicker.addEventListener('input', () => {
+    const selectedStyle = styleSwitcher.value;
+    const selectedColor = colorPicker.value;
+    const selectedShape = shapeSwitcher.value;
+    applyButtonStyle(selectedStyle, selectedColor, selectedShape);
+});
+
+shapeSwitcher.addEventListener('change', () => {
+    const selectedStyle = styleSwitcher.value;
+    const selectedColor = colorPicker.value;
+    const selectedShape = shapeSwitcher.value;
+    applyButtonStyle(selectedStyle, selectedColor, selectedShape);
+});
+
+
+
+
+
+
+        function handleFileSelect(event) {
+		
+		
+		
+		
+		
+		
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contents = e.target.result;
+                const lines = contents.split('\n').filter(line => line.trim() !== '');
+
+    const cleanValue = (value) => value.replace(/^"|"$/g, '').trim(); // Remove leading and trailing quotes
+
+    const rows = lines.map(line => line.split(',').map(cleanValue)); // Clean each value
+                const headers = rows.shift(); // Remove the first row and use it as headers
+
+                // Convert to JSON
+                const jsonResultFull = rows.map(row => {
+                    const obj = {};
+                    headers.forEach((header, index) => {
+                        obj[header] = row[index]; // Assign value or empty string if undefined
+                    });
+                    return obj;
+                });
+
+                // Log JSON to console
+                //console.log('CSV to JSON Result:');
+				//console.log(jsonResult);
+				
+
+ 
+  
+
+
+
+
+async function  recreateChartForProcess(processKey) {
+    // Clear existing arrows and buttons
+	console.log("refresh starts")
+	  document.getElementById('button-container').innerHTML = await '';
+	   callCount = {};
+	await deleteAllLeaderLines();
+  
+
+    await createChartProcess(processKey);
+	
+	
+	
+}
+  
+
+
+
+
+
+
+
+
+
+document.getElementById('refreshButton').addEventListener('click', function() {
+    recreateChartForProcess("completeRestart");
+});
+
+
+
+
+
+
+				
+				function createCircle(color) {
+    return '<svg height="25" width="25" viewBox="0 0 150 150"><circle cx="75" cy="75" r="50" style="fill:'+color+';stroke:black;stroke-width:1" /></svg>';
+}
+
+function createSquare(color) {
+    return '<svg height="25" width="25" viewBox="0 0 150 150"><rect x="25" y="25" width="100" height="100" style="fill:'+color+';stroke:black;stroke-width:1" /></svg>';
+}
+
+				function createTriangle(color) {
+            return '<svg height="25" width="25" viewBox="0 0 150 150"><polygon points="75,0 150,150 0,150" style="fill:'+color+';stroke:black;stroke-width:1" /></svg>';
+        }
+				
+				
+				
+				function createChartProcess(processNameProp){
+					
+				
+				
+				
+				
+				let processArray = {};
+				let stepLogic = {};
+				let arrowsData = {};
+				
+				let jsonResult = jsonResultFull;
+				console.log(processNameProp)
+				
+				if(processNameProp !== "" && processNameProp !== null  && processNameProp !== undefined){
+				if(processNameProp == "completeRestart"){
+				selectedKeys = [];
+				}
+				else{
+					let selectedKeysChecker = false;
+					for(let key2 in selectedKeys){
+						if(selectedKeys[key2] == processNameProp){
+						selectedKeysChecker = true;
+						delete selectedKeys[key2];
+						}
+					}
+					if(selectedKeysChecker){
+					
+					}else{
+					selectedKeys.push(processNameProp)
+					}
+					
+				}
+				}
+				
+				console.log("selectedKeys");
+				console.log(selectedKeys);
+				console.log(selectedKeys.length);
+				
+				
+				console.log(colorCounterMain)
+				colorCounterTemp = 1;
+				colorCounterMain = {};
+				
+				
+				for(let key in jsonResult){
+					//console.log(jsonResult[key]['Item Icon'])
+					
+					 let stepLevel = jsonResult[key]["S_Seq_No"];
+						if(jsonResult[key]["S_Seq_No"].split(".")[0] != null){
+							stepLevel = jsonResult[key]["S_Seq_No"].split(".")[0];
+						}
+					
+					if(stepLogic[stepLevel] == null){
+							stepLogic[stepLevel] = {"name":jsonResult[key]["pName"], "steps":{}};
+							
+							//stepLogic[stepLevel][jsonResult[key]["iName"]]=jsonResult[key]['Item Icon'];
+					}else{
+							//stepLogic[stepLevel][jsonResult[key]["iName"]]=jsonResult[key]['Item Icon'];
+					}
+					
+					
+					if(stepLogic[stepLevel]["steps"][jsonResult[key]["S_Seq_No"]] == null){
+							stepLogic[stepLevel]["steps"][jsonResult[key]["S_Seq_No"]] = {"Step Icon": jsonResult[key]['Step Icon'],"sName":jsonResult[key]["sName"],  "S_Seq_No":jsonResult[key]["S_Seq_No"],"stepLevel": stepLevel};
+							stepLogic[stepLevel]["steps"][jsonResult[key]["S_Seq_No"]][jsonResult[key]["iName"]]=jsonResult[key]['Item Icon'];
+							
+							
+						}else{
+					//		console.log(stepLogic[stepLevel])
+							stepLogic[stepLevel]["steps"][jsonResult[key]["S_Seq_No"]][jsonResult[key]["iName"]]=jsonResult[key]['Item Icon'];
+						}
+					
+					
+					if(processArray[jsonResult[key]["pName"]] == null){
+					//console.log("processArrayCheck");
+					if(colorCounterMain[jsonResult[key]["pName"]] == null){
+					//console.log("processArrayCheck2");
+					if(selectedKeys.length != 0){
+					for(let key2 in selectedKeys){
+						//console.log(jsonResult[key]["pName"] +" vs "+ selectedKeys[key2])
+							processArray[jsonResult[key]["pName"]] = {"name":jsonResult[key]["pName"], processColor:"grey", "steps":{}};
+								colorCounterMain[jsonResult[key]["pName"]] = colorArray[colorCounterTemp-1];
+						
+							if(jsonResult[key]["pName"] == selectedKeys[key2]){
+								processArray[jsonResult[key]["pName"]] = {"name":jsonResult[key]["pName"], processColor:colorArray[colorCounterTemp-1], "steps":{}};
+								break;
+							}
+						}
+					}else{
+						
+						processArray[jsonResult[key]["pName"]] = {"name":jsonResult[key]["pName"], processColor:colorArray[colorCounterTemp-1], "steps":{}};
+								colorCounterMain[jsonResult[key]["pName"]] = colorArray[colorCounterTemp-1];
+					}
+						
+					colorCounterTemp++;
+					}else{
+						for(let key2 in selectedKeys){
+						//console.log(jsonResult[key]["pName"] +" vs "+ selectedKeys[key2])
+						processArray[jsonResult[key]["pName"]] = {"name":jsonResult[key]["pName"], processColor:"grey", "steps":{}};
+						
+							if(jsonResult[key]["pName"] == selectedKeys[key2]){
+								processArray[jsonResult[key]["pName"]] = {"name":jsonResult[key]["pName"], processColor:colorCounterMain[jsonResult[key]["pName"]], "steps":{}};
+							}
+						}
+						
+					}
+					}
+						if(processArray[jsonResult[key]["pName"]]["steps"][jsonResult[key]["S_Seq_No"]] == null){
+							processArray[jsonResult[key]["pName"]]["steps"][jsonResult[key]["S_Seq_No"]] = {"Step Icon": jsonResult[key]['Step Icon'], "sName":jsonResult[key]["sName"], "S_Seq_No":jsonResult[key]["S_Seq_No"],"stepLevel": stepLevel};
+							processArray[jsonResult[key]["pName"]]["steps"][jsonResult[key]["S_Seq_No"]][jsonResult[key]["iName"]]=jsonResult[key]['Item Icon'];
+							
+							
+						}else{
+							processArray[jsonResult[key]["pName"]]["steps"][jsonResult[key]["S_Seq_No"]][jsonResult[key]["iName"]]=jsonResult[key]['Item Icon'];
+						}
+						
+						
+						
+						
+						
+				}
+				console.log(colorCounterMain)
+				console.log(processArray)
+				console.log(stepLogic)
+                // Clear previous buttons
+                const buttonContainer = document.getElementById('button-container');
+                buttonContainer.innerHTML = '';
+				
+				let sectionWrapper1 = document.createElement('div');
+				sectionWrapper1.className = 'sectionWrapper';
+				buttonContainer.appendChild(sectionWrapper1);
+				
+				
+				let wrapperArray=[];
+				for(let key in stepLogic){
+					let sectionWrapper = document.createElement('div');
+					sectionWrapper.className = 'sectionWrapper';
+					sectionWrapper.id = "sectionWrapper" + key;
+					wrapperArray.push(sectionWrapper);
+					buttonContainer.appendChild(sectionWrapper);
+				}
+				
+				
+				//console.log(wrapperArray);
+				
+				let connectionCounter=1;
+				
+				for(let key in processArray){
+					
+					
+					const buttonWrapper1 = document.createElement('div');
+                        buttonWrapper1.className = 'button-wrapper';
+
+                        const button1 = document.createElement('button');
+						
+						
+						button1.style = "margin-bottom: 5px;background-color:"+processArray[key]["processColor"]+";";
+                        button1.textContent = processArray[key]["name"] + ":";
+						
+						button1.setAttribute('arrowID',key);
+						button1.id=key;
+						
+						   // Add the click event listener for recreating the chart
+						button1.addEventListener('click', function() {
+						recreateChartForProcess(key);  // Function to redraw chart
+						});
+
+                        const tooltip = document.createElement('span');
+                        tooltip.className = 'tooltip';
+                        tooltip.textContent = processArray[key]["name"];
+                        buttonWrapper1.appendChild(button1);
+						sectionWrapper1.appendChild(buttonWrapper1);
+						
+						
+				}
+				
+				
+				for(let key in stepLogic){
+				let previousButtonWrapper = null;
+				for (let key2 in stepLogic[key]["steps"]) {
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.className = 'button-wrapper';
+	
+    // Create label
+    const label = document.createElement('span');
+    label.className = 'button-label';
+    label.textContent = stepLogic[key]["steps"][key2]["sName"]; // Replace this with dynamic text if needed
+
+    // Create button
+    const button = document.createElement('button');
+	button.setAttribute('arrowID',stepLogic[key]["steps"][key2]["S_Seq_No"]);
+    button.id=stepLogic[key]["steps"][key2]["S_Seq_No"];
+    // Set button style based on Step Icon
+    let buttonShape = stepLogic[key]["steps"][key2]["Step Icon"].toLowerCase();
+    if (buttonShape.includes("circle")) {
+        button.className = "circle-button";
+    } else if (buttonShape.includes("triangle")) {
+        button.className = "triangle-button";
+    }
+    button.textContent = stepLogic[key]["steps"][key2]["S_Seq_No"];
+
+    const tooltip = document.createElement('span');
+    tooltip.className = 'tooltip';
+    let tooltipInner = "";
+    for (let key3 in stepLogic[key]["steps"][key2]) {
+        if (key3 != "Step Icon" && key3 != "S_Seq_No" && key3 != "stepLevel" && key3 != "sName") {
+            let stringImput = stepLogic[key]["steps"][key2][key3].toLowerCase();
+            let iconColor = stringImput.split("(")[1].split(")")[0];
+            if (stringImput.includes("triangle")) {
+                tooltipInner = tooltipInner + key3 + " : " + createTriangle(iconColor) + "<hr/>";
+            } else if (stringImput.includes("square")) {
+                tooltipInner = tooltipInner + key3 + " : " + createSquare(iconColor) + "<hr/>";
+            } else if (stringImput.includes("circle")) {
+                tooltipInner = tooltipInner + key3 + " : " + createCircle(iconColor) + "<hr/>";
+            }
+        }
+    }
+    
+    tooltip.innerHTML = tooltipInner;
+    button.appendChild(tooltip);
+
+    // Add the label and button to the wrapper
+    buttonWrapper.appendChild(label);
+    buttonWrapper.appendChild(button);
+	//console.log(stepLogic[key]["steps"][key2]["stepLevel"])
+	wrapperArray[stepLogic[key]["steps"][key2]["stepLevel"]-1].appendChild(buttonWrapper);
+	
+   // sectionWrapper1.appendChild(buttonWrapper);
+
+    // Draw a line and arrow between this button and the previous one
+    if (previousButtonWrapper !== null) {
+     //   drawLineWithArrow(previousButtonWrapper.querySelector('button'), buttonWrapper.querySelector('button'));
+    }
+
+    previousButtonWrapper = buttonWrapper;
+}
+}
+
+			
+			for(let key in processArray){
+				processArray[key]["levels"] = {};
+				let tempSteps = processArray[key]["steps"];
+				for(let key2 in tempSteps){
+					if(processArray[key]["levels"][tempSteps[key2]["stepLevel"]] == null){
+					processArray[key]["levels"][tempSteps[key2]["stepLevel"]] = [];
+					processArray[key]["levels"][tempSteps[key2]["stepLevel"]].push(tempSteps[key2]);
+					}else{
+					processArray[key]["levels"][tempSteps[key2]["stepLevel"]].push(tempSteps[key2]);
+					}
+				}
+			}
+			
+			  
+			
+			let arrowLogicBuffer=[];
+			let seqCounter = 1;
+			let colorCounter = 1;
+			let arrowEnder="";
+			for(let key in processArray){
+				let arrowCoordTemp = {};
+				if(colorCounter >= colorArray.length){
+				colorCounter = 1;
+				}
+				
+				let colorArrow = colorArray[colorCounter-1];
+				
+				
+				for(let key2 in processArray[key]["levels"]){
+				
+					if(key2 == 1){
+					for(let key3 in processArray[key]["levels"][key2]){
+					let arrowStarter = document.querySelector("[arrowID='"+key+"']")
+					
+					if(arrowEnder !== document.querySelector("[arrowID='"+processArray[key]["levels"][key2][key3]["S_Seq_No"]+"']")){
+					arrowEnder = document.querySelector("[arrowID='"+processArray[key]["levels"][key2][key3]["S_Seq_No"]+"']")
+					drawLineWithArrow(arrowStarter, arrowEnder, processArray[key]["processColor"]);
+					}
+					if(processArray[key]["levels"][parseInt(key2)+1] != null){
+					for(let key4 in processArray[key]["levels"][parseInt(key2)+1]){
+					drawLineWithArrow(arrowEnder, 
+					document.querySelector("[arrowID='"+processArray[key]["levels"][parseInt(key2)+1][key4]["S_Seq_No"]+"']"), processArray[key]["processColor"]);
+					}
+					}
+					}
+					}else{
+					for(let key3 in processArray[key]["levels"][key2]){
+					if(processArray[key]["levels"][parseInt(key2)+1] != null){
+					for(let key4 in processArray[key]["levels"][parseInt(key2)+1]){
+					drawLineWithArrow(document.querySelector("[arrowID='"+processArray[key]["levels"][key2][key3]["S_Seq_No"]+"']"), 
+					document.querySelector("[arrowID='"+processArray[key]["levels"][parseInt(key2)+1][key4]["S_Seq_No"]+"']"), processArray[key]["processColor"]);
+					}
+					}
+					}
+					}
+				
+				
+				//drawLineWithArrow(document.querySelector("[arrowID='"+key+"']"), document.getElementById("fileInput"));
+				
+				}
+			seqCounter++;
+			colorCounter++;
+			}
+				
+				}
+				
+				
+				
+				recreateChartForProcess(null);
+				
+				
+				
+				
+				
+				
+                // Create buttons based on the first column and tooltips from the second column
+				/*
+                rows.forEach((row, index) => {
+                    const [buttonText, tooltipText] = row;
+                    if (buttonText && tooltipText) { // Avoid creating buttons for empty values
+                        const buttonWrapper = document.createElement('div');
+                        buttonWrapper.className = 'button-wrapper';
+
+                        const button = document.createElement('button');
+                        button.textContent = buttonText;
+
+                        const tooltip = document.createElement('span');
+                        tooltip.className = 'tooltip';
+                        tooltip.textContent = tooltipText;
+
+                        button.appendChild(tooltip);
+                        buttonWrapper.appendChild(button);
+
+                        // Add arrow between buttons if it's not the first button
+                        if (index > 0) {
+                            const prevButtonWrapper = buttonContainer.children[index - 1];
+                            const arrow = document.createElement('div');
+                            arrow.className = 'arrow arrow-left';
+                            buttonWrapper.appendChild(arrow);
+                            prevButtonWrapper.appendChild(createArrow('arrow-right'));
+                        }
+
+                        buttonContainer.appendChild(buttonWrapper);
+                    }
+                });
+				*/
+            };
+            reader.readAsText(file);
+        }
+
+        function createArrow(direction) {
+            const arrow = document.createElement('div');
+            arrow.className = `arrow ${direction}`;
+            return arrow;
+        }
+    </script>
+</body>
+</html>
